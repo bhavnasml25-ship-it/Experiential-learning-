@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Growth Hackers - A digital marketing agency specializing in SEO, social media, ads, and branding.">
+    <meta name="keywords" content="digital marketing, SEO, social media, PPC, branding, Growth Hackers">
+    <meta name="author" content="Growth Hackers">
+    <meta property="og:title" content="Growth Hackers - Digital Marketing Agency">
+    <meta property="og:description" content="Accelerate your business growth with our expert digital marketing services.">
+    <meta property="og:type" content="website">
+    <title>Growth Hackers - Digital Marketing Agency</title>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0a0f1e;
+            --accent: #93c5fd;
+            --bg: #050a14;
+            --bg-card: #0d1526;
+            --bg-card2: #0a0f1e;
+            --text: #f0f4ff;
+            --text-muted: #8899bb;
+            --border: rgba(37,99,235,0.22);
+            --gradient: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+            --shadow: 0 20px 60px rgba(0,0,0,0.5);
+            --radius: 16px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; font-weight: 700; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+        /* ===== NAV ===== */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(5,10,20,0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        header.scrolled { background: rgba(5,10,20,0.97); }
+
+        nav .container {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 68px;
+        }
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem; font-weight: 800;
+            background: var(--gradient); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .nav-links { list-style: none; display: flex; gap: 6px; align-items: center; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.9rem; font-weight: 500; padding: 7px 14px;
+            border-radius: 30px; transition: all 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); background: rgba(255,107,53,0.08); }
+
+        /* Hamburger */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+        .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            position: relative; overflow: hidden;
+            background: radial-gradient(ellipse at 20% 50%, rgba(37,99,235,0.14) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(96,165,250,0.08) 0%, transparent 50%),
+                        var(--bg);
+            padding: 100px 0 60px;
+        }
+        .hero-orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(80px); pointer-events: none;
+        }
+        .orb1 { width: 500px; height: 500px; background: rgba(37,99,235,0.18); top: -100px; right: -100px; }
+        .orb2 { width: 300px; height: 300px; background: rgba(96,165,250,0.1); bottom: 50px; left: -80px; }
+
+        .hero-content { position: relative; z-index: 1; max-width: 720px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.35);
+            color: var(--accent); padding: 6px 16px; border-radius: 30px;
+            font-size: 0.82rem; font-weight: 600; letter-spacing: 0.5px;
+            text-transform: uppercase; margin-bottom: 24px;
+        }
+        .hero-badge i { font-size: 0.7rem; }
+
+        .hero h2 {
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 800; line-height: 1.1;
+            letter-spacing: -1.5px; margin-bottom: 20px;
+        }
+        .hero h2 .highlight {
+            background: var(--gradient); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 560px; margin-bottom: 36px; }
+
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+        .cta-button {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gradient); color: #fff; text-decoration: none;
+            padding: 14px 30px; border-radius: 50px; font-weight: 700;
+            font-size: 0.95rem; transition: all 0.3s; box-shadow: 0 8px 30px rgba(37,99,235,0.4);
+        }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(37,99,235,0.55); }
+        .cta-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--text); text-decoration: none; padding: 14px 28px;
+            border: 1px solid var(--border); border-radius: 50px; font-weight: 500;
+            font-size: 0.95rem; transition: all 0.3s;
+        }
+        .cta-secondary:hover { border-color: var(--primary); color: var(--primary); background: rgba(255,107,53,0.05); }
+
+        .hero-stats {
+            display: flex; gap: 40px; margin-top: 56px; flex-wrap: wrap;
+        }
+        .hero-stat-item { text-align: left; }
+        .hero-stat-item strong { display: block; font-size: 1.8rem; font-weight: 800; font-family: 'Syne', sans-serif; color: var(--primary); }
+        .hero-stat-item span { font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ===== SECTIONS COMMON ===== */
+        section { padding: 90px 0; }
+        .section-tag {
+            display: inline-block; background: rgba(37,99,235,0.12);
+            color: var(--accent); font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            padding: 5px 14px; border-radius: 30px; margin-bottom: 12px;
+        }
+        .section-title { font-size: clamp(1.8rem,4vw,2.6rem); letter-spacing: -0.5px; margin-bottom: 14px; }
+        .section-subtitle { color: var(--text-muted); font-size: 1rem; max-width: 560px; margin-bottom: 50px; }
+
+        /* ===== SERVICES ===== */
+        .services { background: var(--bg); }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 22px;
+        }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: all 0.35s ease;
+            position: relative; overflow: hidden;
+        }
+        .service-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(37,99,235,0.06) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .service-card:hover { transform: translateY(-5px); border-color: rgba(37,99,235,0.5); box-shadow: var(--shadow); }
+        .service-card:hover::before { opacity: 1; }
+
+        .service-icon-wrap {
+            width: 54px; height: 54px; border-radius: 14px;
+            background: rgba(37,99,235,0.14); display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .service-icon { font-size: 1.4rem; color: var(--primary); }
+        .service-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
+        .service-card > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px; }
+
+        .service-features { list-style: none; margin-bottom: 20px; }
+        .service-features li {
+            font-size: 0.85rem; color: var(--text-muted); padding: 5px 0;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .service-features li i { color: var(--primary); font-size: 0.7rem; }
+
+        .service-cta {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--primary); text-decoration: none; font-size: 0.88rem; font-weight: 600;
+            transition: gap 0.2s;
+        }
+        .service-cta:hover { gap: 10px; }
+
+        /* ===== PACKAGES ===== */
+        .packages { background: var(--bg-card2); }
+        .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 24px; }
+        .pricing-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 36px 30px; text-align: center; position: relative; transition: all 0.3s;
+        }
+        .pricing-card.featured {
+            border-color: var(--primary); background: linear-gradient(135deg, rgba(37,99,235,0.09), var(--bg-card));
+        }
+        .pricing-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+        .popular-badge {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--gradient); color: #fff; font-size: 0.72rem; font-weight: 700;
+            padding: 4px 16px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+        }
+        .pricing-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
+        .pricing-card .price { font-size: 2.4rem; font-weight: 800; font-family: 'Syne', sans-serif; color: var(--primary); margin: 16px 0 4px; }
+        .pricing-card .price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+        .pricing-card p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 22px; }
+        .pricing-features { list-style: none; text-align: left; margin-bottom: 28px; }
+        .pricing-features li { padding: 7px 0; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .pricing-features li i.fa-check { color: #4ade80; }
+        .pricing-features li i.fa-times { color: #ff6b6b; }
+        .pricing-btn {
+            display: block; width: 100%; padding: 13px; border-radius: 50px;
+            text-decoration: none; font-weight: 700; font-size: 0.92rem; transition: all 0.3s;
+        }
+        .pricing-btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+        .pricing-btn-outline:hover { background: var(--primary); color: #fff; }
+        .pricing-btn-filled { background: var(--gradient); color: #fff; border: none; box-shadow: 0 6px 20px rgba(37,99,235,0.35); }
+        .pricing-btn-filled:hover { box-shadow: 0 10px 30px rgba(37,99,235,0.5); transform: translateY(-1px); }
+
+        /* ===== STATS ===== */
+        .stats { background: var(--bg); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 22px; margin-bottom: 50px; }
+        .stat-item {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 30px 20px; text-align: center; transition: all 0.3s;
+        }
+        .stat-item:hover { border-color: var(--primary); transform: translateY(-4px); }
+        .stat-icon { font-size: 1.6rem; color: var(--primary); margin-bottom: 12px; }
+        .counter { font-size: 2.2rem; font-weight: 800; font-family: 'Syne', sans-serif; color: var(--text); }
+        .stat-item p { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+
+        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
+        .achievement-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 28px; display: flex; gap: 18px; align-items: flex-start; transition: all 0.3s;
+        }
+        .achievement-card:hover { border-color: var(--primary); }
+        .achievement-icon { font-size: 1.5rem; color: var(--primary); flex-shrink: 0; margin-top: 2px; }
+        .achievement-card h4 { font-size: 0.98rem; margin-bottom: 6px; }
+        .achievement-card p { color: var(--text-muted); font-size: 0.84rem; line-height: 1.5; }
+
+        /* ===== NEWSLETTER ===== */
+        .newsletter {
+            background: linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(96,165,250,0.04) 100%);
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .newsletter .container { text-align: center; }
+        .newsletter h2 { font-size: 2rem; margin-bottom: 10px; }
+        .newsletter p { color: var(--text-muted); margin-bottom: 28px; }
+        .newsletter-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .newsletter-form input[type="email"] {
+            padding: 14px 22px; border-radius: 50px; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text); font-size: 0.95rem; min-width: 300px;
+            transition: border-color 0.2s; font-family: 'DM Sans', sans-serif;
+        }
+        .newsletter-form input[type="email"]:focus { outline: none; border-color: var(--primary); }
+        .newsletter-form button {
+            padding: 14px 28px; background: var(--gradient); color: #fff; border: none;
+            border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 0.92rem;
+            transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+        }
+        .newsletter-form button:hover { box-shadow: 0 8px 25px rgba(37,99,235,0.45); transform: translateY(-1px); }
+
+        /* ===== CONTACT ===== */
+        .contact { background: var(--bg-card2); }
+        .contact-wrapper { display: grid; grid-template-columns: 1fr 1.4fr; gap: 50px; align-items: start; }
+
+        .contact-info h3 { font-size: 1.5rem; margin-bottom: 14px; }
+        .contact-info p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px; }
+
+        .contact-detail {
+            display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
+        }
+        .contact-icon {
+            width: 42px; height: 42px; border-radius: 10px; background: rgba(37,99,235,0.14);
+            display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0;
+        }
+        .contact-detail h5 { font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .contact-detail p { color: var(--text); font-size: 0.93rem; margin: 0; }
+
+        .contact-form-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 36px;
+        }
+        .contact-form-card h3 { font-size: 1.3rem; margin-bottom: 24px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%; padding: 13px 16px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+            color: var(--text); font-size: 0.93rem; transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { outline: none; border-color: var(--primary); background: rgba(37,99,235,0.05); }
+        .form-group select option { background: var(--bg-card); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: var(--text-muted); }
+
+        .form-submit-btn {
+            width: 100%; padding: 15px; background: var(--gradient); color: #fff; border: none;
+            border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer;
+            transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .form-submit-btn:hover { box-shadow: 0 10px 30px rgba(37,99,235,0.5); transform: translateY(-2px); }
+        .form-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+        /* Toast notification */
+        #toast {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            padding: 16px 24px; border-radius: 12px; font-size: 0.92rem; font-weight: 500;
+            display: flex; align-items: center; gap: 10px;
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.4s ease; pointer-events: none; max-width: 360px;
+        }
+        #toast.show { opacity: 1; transform: translateY(0); }
+        #toast.success { background: #052e16; border: 1px solid #166534; color: #86efac; }
+        #toast.error { background: #2d0a0a; border: 1px solid #7f1d1d; color: #fca5a5; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg); border-top: 1px solid var(--border); padding: 40px 0;
+        }
+        footer .container {
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+            flex-wrap: wrap; gap: 16px;
+        }
+        footer p { color: var(--text-muted); font-size: 0.88rem; }
+        .social-links { display: flex; gap: 10px; }
+        .social-link {
+            width: 38px; height: 38px; border-radius: 50%; background: var(--bg-card);
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); text-decoration: none; transition: all 0.2s;
+        }
+        .social-link:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* ===== SCROLL TOP BTN ===== */
+        #scrollTop {
+            position: fixed; bottom: 30px; left: 30px; z-index: 999;
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            background: var(--gradient); color: #fff; cursor: pointer;
+            opacity: 0; transform: translateY(10px); transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+        }
+        #scrollTop.visible { opacity: 1; transform: translateY(0); }
+        #scrollTop:hover { transform: translateY(-3px); }
+
+        /* ===== SECTION FADE IN ===== */
+        section { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        section.animate { opacity: 1; transform: translateY(0); }
+        .service-card, .stat-item, .achievement-card, .pricing-card {
+            opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, box-shadow 0.3s;
+        }
+        .service-card.animate, .stat-item.animate, .achievement-card.animate, .pricing-card.animate { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 68px; left: 0; right: 0;
+                background: rgba(5,10,20,0.97); backdrop-filter: blur(18px);
+                flex-direction: column; padding: 20px 24px 30px; gap: 4px;
+                transform: translateY(-100%); opacity: 0; pointer-events: none;
+                transition: all 0.35s ease;
+            }
+            .nav-links.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+            .nav-links a { display: block; padding: 10px 14px; font-size: 1rem; }
+            .hamburger { display: flex; }
+            .hero-stats { gap: 20px; }
+        }
+        @media (max-width: 480px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .contact-form-card { padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- ===== SCROLL TOP ===== -->
+    <button id="scrollTop" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <nav>
+            <div class="container">
+                <h1 class="logo">Growth Hackers</h1>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#packages">Packages</a></li>
+                    <li><a href="#stats">Stats</a></li>
+                    <li><a href="#newsletter">Newsletter</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section id="home" class="hero">
+        <div class="hero-orb orb1"></div>
+        <div class="hero-orb orb2"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-bolt"></i> #1 Growth Marketing Agency</div>
+                <h2>Accelerate Your<br><span class="highlight">Business Growth</span></h2>
+                <p>We are a digital marketing agency specializing in SEO, social media, ads, and branding — helping your business thrive in the digital world.</p>
+                <div class="hero-actions">
+                    <a href="#contact" class="cta-button"><i class="fas fa-rocket"></i> Get Started Today</a>
+                    <a href="#services" class="cta-secondary"><i class="fas fa-play-circle"></i> See Our Services</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat-item"><strong>500+</strong><span>Happy Clients</span></div>
+                    <div class="hero-stat-item"><strong>1200+</strong><span>Projects Done</span></div>
+                    <div class="hero-stat-item"><strong>10+ Yrs</strong><span>Experience</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-tag">What We Do</div>
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive digital marketing solutions tailored to skyrocket your brand.</p>
+            <div class="services-grid">
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-search service-icon"></i></div>
+                    <h3>SEO Optimization</h3>
+                    <p>Dominate search rankings with our data-driven SEO strategies. On-page, off-page, and technical SEO to drive sustainable organic traffic.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Keyword Research & Strategy</li>
+                        <li><i class="fas fa-check"></i> On-Page & Technical SEO</li>
+                        <li><i class="fas fa-check"></i> Link Building Campaigns</li>
+                        <li><i class="fas fa-check"></i> Monthly SEO Reports</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-share-alt service-icon"></i></div>
+                    <h3>Social Media Marketing</h3>
+                    <p>Build a powerful social media presence that engages your audience and converts followers into loyal customers across all major platforms.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Content Creation & Scheduling</li>
+                        <li><i class="fas fa-check"></i> Community Management</li>
+                        <li><i class="fas fa-check"></i> Influencer Partnerships</li>
+                        <li><i class="fas fa-check"></i> Analytics & Insights</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-bullhorn service-icon"></i></div>
+                    <h3>Paid Advertising (PPC)</h3>
+                    <p>Maximize ROI with laser-targeted paid ad campaigns on Google, Meta, LinkedIn and more. Every rupee works harder for your business.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Google Ads & Shopping</li>
+                        <li><i class="fas fa-check"></i> Facebook & Instagram Ads</li>
+                        <li><i class="fas fa-check"></i> Retargeting Campaigns</li>
+                        <li><i class="fas fa-check"></i> A/B Testing & Optimization</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-palette service-icon"></i></div>
+                    <h3>Branding & Design</h3>
+                    <p>Craft a brand identity that tells your story. From logo to full brand guidelines, we build brands people remember.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Logo & Visual Identity</li>
+                        <li><i class="fas fa-check"></i> Brand Strategy & Guidelines</li>
+                        <li><i class="fas fa-check"></i> Marketing Collateral Design</li>
+                        <li><i class="fas fa-check"></i> UI/UX Design</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-envelope-open-text service-icon"></i></div>
+                    <h3>Email Marketing</h3>
+                    <p>Nurture leads and retain customers with highly personalized email campaigns — the right message to the right audience at the right time.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Campaign Strategy & Design</li>
+                        <li><i class="fas fa-check"></i> List Building & Segmentation</li>
+                        <li><i class="fas fa-check"></i> Automated Drip Sequences</li>
+                        <li><i class="fas fa-check"></i> Open Rate Optimization</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-chart-line service-icon"></i></div>
+                    <h3>Analytics & Reporting</h3>
+                    <p>Make smarter decisions with real-time data. Comprehensive dashboards and actionable insights that drive continuous growth.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Google Analytics Setup</li>
+                        <li><i class="fas fa-check"></i> Custom KPI Dashboards</li>
+                        <li><i class="fas fa-check"></i> Conversion Rate Optimization</li>
+                        <li><i class="fas fa-check"></i> Monthly Performance Reports</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-pen-nib service-icon"></i></div>
+                    <h3>Content Marketing</h3>
+                    <p>Attract, engage, and convert with high-quality content that educates your audience and establishes your brand as an industry authority.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Blog & Article Writing</li>
+                        <li><i class="fas fa-check"></i> Video Script & Production</li>
+                        <li><i class="fas fa-check"></i> Infographic & Visual Content</li>
+                        <li><i class="fas fa-check"></i> Content Calendar Planning</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon-wrap"><i class="fas fa-globe service-icon"></i></div>
+                    <h3>Web Design & Development</h3>
+                    <p>Launch stunning, conversion-optimized websites and landing pages that make a powerful first impression and turn visitors into customers.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Responsive Website Design</li>
+                        <li><i class="fas fa-check"></i> Landing Page Optimization</li>
+                        <li><i class="fas fa-check"></i> E-Commerce Development</li>
+                        <li><i class="fas fa-check"></i> Speed & Performance Tuning</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PACKAGES ===== -->
+    <section id="packages" class="packages">
+        <div class="container">
+            <div class="section-tag">Pricing</div>
+            <h2 class="section-title">Choose Your Package</h2>
+            <p class="section-subtitle">Flexible plans for every stage of your business growth.</p>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <p>Perfect for startups getting their digital presence off the ground.</p>
+                    <div class="price">$500<span>/month</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> SEO Optimization</li>
+                        <li><i class="fas fa-check"></i> Social Media Management</li>
+                        <li><i class="fas fa-times"></i> Ad Campaigns</li>
+                        <li><i class="fas fa-times"></i> Branding Services</li>
+                        <li><i class="fas fa-check"></i> Monthly Reports</li>
+                    </ul>
+                    <a href="#contact" class="pricing-btn pricing-btn-outline">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Pro</h3>
+                    <p>Ideal for growing businesses ready to scale their marketing efforts.</p>
+                    <div class="price">$1000<span>/month</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> SEO Optimization</li>
+                        <li><i class="fas fa-check"></i> Social Media Management</li>
+                        <li><i class="fas fa-check"></i> Ad Campaigns</li>
+                        <li><i class="fas fa-times"></i> Branding Services</li>
+                        <li><i class="fas fa-check"></i> Monthly Reports</li>
+                    </ul>
+                    <a href="#contact" class="pricing-btn pricing-btn-filled">Get Started</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Premium</h3>
+                    <p>Full-suite marketing for enterprises that want to dominate their market.</p>
+                    <div class="price">$2000<span>/month</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> SEO Optimization</li>
+                        <li><i class="fas fa-check"></i> Social Media Management</li>
+                        <li><i class="fas fa-check"></i> Ad Campaigns</li>
+                        <li><i class="fas fa-check"></i> Branding Services</li>
+                        <li><i class="fas fa-check"></i> Monthly Reports</li>
+                    </ul>
+                    <a href="#contact" class="pricing-btn pricing-btn-outline">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section id="stats" class="stats">
+        <div class="container">
+            <div class="section-tag">Our Track Record</div>
+            <h2 class="section-title">Our Achievements</h2>
+            <p class="section-subtitle">A decade of delivering measurable results for businesses worldwide.</p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <h3 class="counter" data-target="500">0</h3>
+                    <p>Happy Clients</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
+                    <h3 class="counter" data-target="1200">0</h3>
+                    <p>Projects Completed</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-smile"></i></div>
+                    <h3 class="counter" data-target="98">0</h3>
+                    <p>% Satisfaction Rate</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3 class="counter" data-target="10">0</h3>
+                    <p>Years of Experience</p>
+                </div>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
+                    <div><h4>Best Digital Agency 2023</h4><p>Awarded by the Digital Marketing Association for outstanding campaign performance.</p></div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-award"></i></div>
+                    <div><h4>Google Premier Partner</h4><p>Certified Google Premier Partner — placing us in the top 3% of Google Ads agencies globally.</p></div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-star"></i></div>
+                    <div><h4>Meta Business Partner</h4><p>Official Meta Business Partner with certified expertise in Facebook & Instagram advertising.</p></div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-rocket"></i></div>
+                    <div><h4>$50M+ Ad Spend Managed</h4><p>Over $50M in paid advertising managed across Google, Meta, and LinkedIn for clients worldwide.</p></div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-globe"></i></div>
+                    <div><h4>Clients in 25+ Countries</h4><p>Trusted by businesses across North America, Europe, Asia, and the Middle East.</p></div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div><h4>300% Avg. ROI Delivered</h4><p>Our clients see an average 3x return on their marketing investment within 6 months.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section id="newsletter" class="newsletter">
+        <div class="container">
+            <div class="section-tag">Stay in the Loop</div>
+            <h2>Get Marketing Insights</h2>
+            <p>Subscribe to our newsletter for the latest digital marketing tips, trends and case studies.</p>
+            <form class="newsletter-form" id="newsletterForm" novalidate>
+                <input type="email" id="newsletter-email" placeholder="Enter your email address" required autocomplete="email">
+                <button type="submit">Subscribe <i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-tag">Get In Touch</div>
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Ready to grow? Fill out the form and our team will get back to you within 24 hours.</p>
+
+            <div class="contact-wrapper">
+                <!-- Left Info -->
+                <aside>
+                    <h3>Let's Talk Business</h3>
+                    <p>Whether you're a startup or an established brand, we'd love to hear about your goals and show you how we can help you achieve them.</p>
+                    <div class="contact-detail">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div><h5>Email Us</h5><p>bhavnasarile007@gmail.com</p></div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div><h5>Call Us</h5><p>+91 76664 93759</p></div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div><h5>Office</h5><p>Nagpur, Maharashtra, India</p></div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                        <div><h5>Working Hours</h5><p>Mon – Sat: 9 AM – 7 PM IST</p></div>
+                    </div>
+                </aside>
+
+                <!-- Right Form -->
+                <div class="contact-form-card">
+                    <h3>Send Us a Message</h3>
+                    <form id="contactForm" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="Bhavna" required autocomplete="given-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Sarile" required autocomplete="family-name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" autocomplete="tel">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service Interested In</label>
+                            <select id="service" name="service">
+                                <option value="" disabled selected>Select a service…</option>
+                                <option>SEO Optimization</option>
+                                <option>Social Media Marketing</option>
+                                <option>Paid Advertising (PPC)</option>
+                                <option>Branding & Design</option>
+                                <option>Email Marketing</option>
+                                <option>Analytics & Reporting</option>
+                                <option>Content Marketing</option>
+                                <option>Web Design & Development</option>
+                                <option>Multiple Services</option>
+                                <option>Not Sure Yet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Monthly Budget</label>
+                            <select id="budget" name="budget">
+                                <option value="" disabled selected>Select a budget range…</option>
+                                <option>Under $500</option>
+                                <option>$500 – $1,000</option>
+                                <option>$1,000 – $2,000</option>
+                                <option>$2,000 – $5,000</option>
+                                <option>$5,000+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Message *</label>
+                            <textarea id="message" name="message" placeholder="Tell us about your project, goals, or any questions…" required></textarea>
+                        </div>
+                        <button type="submit" class="form-submit-btn" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Growth Hackers. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script type="text/javascript">
+        // ---- EmailJS Init ----
+        // STEP 1: Sign up at https://www.emailjs.com (free)
+        // STEP 2: Create a service (e.g. Gmail) → note your SERVICE_ID
+        // STEP 3: Create an email template → note your TEMPLATE_ID
+        //         Template variables used here:
+        //           {{from_name}}, {{from_email}}, {{phone}}, {{service}},
+        //           {{budget}}, {{message}}, {{to_email}}
+        // STEP 4: Get your PUBLIC KEY from Account → API Keys
+        // STEP 5: Replace the three placeholders below:
+        const EMAILJS_PUBLIC_KEY  = 'yH7q10n5N6gYpx-o7';
+        const EMAILJS_SERVICE_ID  = 'service_p80s9tx';
+        const EMAILJS_TEMPLATE_ID = 'template_rcaurjf';
+        const RECIPIENT_EMAIL     = 'bhavnasarile007@gmail.com';
+
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+        // ---- Toast helper ----
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.innerHTML = `<i class="fas ${icon}"></i> ${msg}`;
+            toast.className = `show ${type}`;
+            setTimeout(() => { toast.className = ''; }, 5000);
+        }
+
+        // ---- Contact Form Submit ----
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName  = document.getElementById('lastName').value.trim();
+            const email     = document.getElementById('email').value.trim();
+            const phone     = document.getElementById('phone').value.trim();
+            const service   = document.getElementById('service').value;
+            const budget    = document.getElementById('budget').value;
+            const message   = document.getElementById('message').value.trim();
+
+            if (!firstName || !lastName || !email || !message) {
+                showToast('Please fill in all required fields.', 'error');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+
+            const templateParams = {
+                from_name:  `${firstName} ${lastName}`,
+                from_email: email,
+                phone:      phone || 'Not provided',
+                service:    service || 'Not specified',
+                budget:     budget  || 'Not specified',
+                message:    message,
+                to_email:   RECIPIENT_EMAIL,
+                reply_to:   email
+            };
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+                showToast('🎉 Message sent! We\'ll get back to you within 24 hours.', 'success');
+                this.reset();
+            } catch (err) {
+                console.error('EmailJS error:', err);
+                showToast('Failed to send message. Please email us directly at ' + RECIPIENT_EMAIL, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+            }
+        });
+
+        // ---- Newsletter Form ----
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailVal = document.getElementById('newsletter-email').value.trim();
+            if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+                showToast('Please enter a valid email to subscribe.', 'error');
+                return;
+            }
+            showToast('✅ Subscribed! Watch your inbox for insights.', 'success');
+            this.reset();
+        });
+
+        // ---- Counter Animation ----
+        let countersStarted = false;
+        function animateCounters() {
+            if (countersStarted) return;
+            countersStarted = true;
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const suffix = counter.closest('.stat-item').querySelector('p').innerText.startsWith('%') ? '%' : '+';
+                let current = 0;
+                const increment = Math.ceil(target / 80);
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.innerText = target + suffix;
+                        clearInterval(timer);
+                    } else {
+                        counter.innerText = current;
+                    }
+                }, 20);
+            });
+        }
+
+        // ---- Intersection Observer: section fade-in ----
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    if (entry.target.id === 'stats') animateCounters();
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('section').forEach(s => sectionObserver.observe(s));
+
+        // ---- Card stagger ----
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    cardObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.service-card, .stat-item, .achievement-card, .pricing-card').forEach((card, i) => {
+            card.style.transitionDelay = (i % 4) * 0.1 + 's';
+            cardObserver.observe(card);
+        });
+
+        // ---- Smooth scroll ----
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+                // close mobile menu
+                document.getElementById('navLinks').classList.remove('open');
+                document.getElementById('hamburger').classList.remove('open');
+            });
+        });
+
+        // ---- Hamburger ----
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            this.setAttribute('aria-expanded', this.classList.contains('open'));
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // ---- Sticky header style ----
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 60);
+            const btn = document.getElementById('scrollTop');
+            btn.classList.toggle('visible', window.scrollY > 400);
+        });
+
+        // ---- Scroll top ----
+        document.getElementById('scrollTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
